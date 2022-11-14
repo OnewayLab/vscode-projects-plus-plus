@@ -10,16 +10,27 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-projects-plus-plus.helloWorld"
+    "onView:projects"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "vscode-projects-plus-plus.helloWorld",
-        "title": "Hello World"
+    "views": {
+      "explorer": [
+        {
+          "id": "projects",
+          "name": "Projects"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Projects++",
+      "properties": {
+        "projects-plus-plus.rootPath": {
+          "type": "string",
+          "description": "Root Path of the Workspace"
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
