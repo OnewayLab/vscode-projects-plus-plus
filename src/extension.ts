@@ -17,8 +17,14 @@ export function activate(context: vscode.ExtensionContext) {
 		() => projectsTreeProvider.refresh()
 	)
 	vscode.commands.registerCommand(
-		'projects-plus-plus.openProject',
-		(item) => projectsTreeProvider.openProject(item)
+		'projects-plus-plus.openInWorkspace',
+		(item) => projectsTreeProvider.openInWorkspace(item)
+	)
+	vscode.commands.registerCommand(
+		'projects-plus-plus.removeFromWorkspace',
+		() => {
+			projectsTreeProvider.removeFromWorkspace()
+		}
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.newFolder',

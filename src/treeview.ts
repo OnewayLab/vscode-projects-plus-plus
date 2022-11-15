@@ -66,12 +66,30 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         this._onDidChangeTreeData.fire(undefined)
     }
 
-    openProject(item: Item): void {
+    openInWorkspace(item: Item): void {
         vscode.workspace.updateWorkspaceFolders(
             vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders.length : 0,
             null,
             { uri: item.uri }
         )
+    }
+
+    async removeFromWorkspace() {
+        // VSCode doesn't provide a way to get the selected folder in the explorer
+        // so we have to use "copyFilePath" command and get it from the clipboard :(
+        // Thanks to @JeremyFunk for the idea (https://github.com/microsoft/vscode/issues/3553#issuecomment-1098562676)
+        const originalClipboard = await vscode.env.clipboard.readText()
+        await vscode.commands.executeCommand("copyFilePath")
+        const filePath = await vscode.env.clipboard.readText()
+        await vscode.env.clipboard.writeText(originalClipboard)
+
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(vscode.Uri.file(filePath))
+        if (workspaceFolder) {
+            vscode.workspace.updateWorkspaceFolders(
+                vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders.indexOf(workspaceFolder) : 0,
+                1
+            )
+        }
     }
 
     newFolder(item: Item): void {
