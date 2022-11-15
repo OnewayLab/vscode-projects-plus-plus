@@ -5,10 +5,17 @@ import { setRootPath } from './config';
 
 export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     rootPath?: string;
+    projects: string[] = [];
 
     constructor() {
         // get the root path
-        this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get("rootPath");
+        this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get<string>("rootPath");
+
+        // get projects
+        let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects");
+        if (projects) {
+            this.projects = projects;
+        }
 
         // if the root path is not set, show a open dialog for the user to select a folder
         if (!this.rootPath) {
@@ -23,10 +30,13 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     getChildren(element?: Item): Thenable<Item[]> {
         if (element) {
             return new Promise(resolve => vscode.workspace.fs.readDirectory(element.uri).then((entries) => {
-                resolve(entries.map((entry) => {
+                resolve(entries.filter((entry) => {
+                    return entry[1] === vscode.FileType.Directory;
+                }).map((entry) => {
+                    let fullPath = path.join(element.uri.fsPath, entry[0]);
                     return new Item(
                         entry[0],
-                        entry[1] === vscode.FileType.Directory ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+                        this.projects.includes(fullPath) ? "project" : "folder",
                         vscode.Uri.joinPath(element.uri, entry[0])
                     );
                 }));
@@ -36,7 +46,7 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
                 this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get("rootPath");
             }
             if (this.rootPath) {
-                return Promise.resolve([new Item(this.rootPath, vscode.TreeItemCollapsibleState.Expanded, vscode.Uri.file(this.rootPath))]);
+                return Promise.resolve([new Item(this.rootPath, "folder", vscode.Uri.file(this.rootPath))]);
             } else {
                 setRootPath();
                 return Promise.reject("Root path not set");
@@ -46,11 +56,14 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
 }
 
 class Item extends vscode.TreeItem {
+    iconPath?: vscode.Uri | vscode.ThemeIcon;
+
     constructor(
-        public readonly label: string,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public readonly name: string,
+        public readonly type: string,
         public readonly uri: vscode.Uri
     ) {
-        super(label, collapsibleState);
+        super(name, vscode.TreeItemCollapsibleState.Collapsed);
+        this.iconPath = new vscode.ThemeIcon(type);
     }
 }

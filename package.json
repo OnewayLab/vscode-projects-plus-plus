@@ -28,6 +28,14 @@
         "projects-plus-plus.rootPath": {
           "type": "string",
           "description": "Root Path of the Workspace"
+        },
+        "projects-plus-plus.projects": {
+          "type": "array",
+          "description": "Projects",
+          "items": {
+            "type": "string",
+            "description": "Project Path"
+          }
         }
       }
     }
