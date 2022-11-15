@@ -44,6 +44,21 @@
         "command": "projects-plus-plus.refreshEntry",
         "title": "Refresh",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "projects-plus-plus.openProject",
+        "title": "Open project",
+        "icon": "$(add)"
+      },
+      {
+        "command": "projects-plus-plus.newFolder",
+        "title": "New folder",
+        "icon": "$(new-folder)"
+      },
+      {
+        "command": "projects-plus-plus.deleteFolder",
+        "title": "Delete folder",
+        "icon": "$(trashcan)"
       }
     ],
     "menus": {
@@ -52,6 +67,22 @@
           "command": "projects-plus-plus.refreshEntry",
           "when": "view == projects",
           "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "projects-plus-plus.openProject",
+          "when": "view == projects",
+          "group": "inline"
+        },
+        {
+          "command": "projects-plus-plus.newFolder",
+          "when": "view == projects",
+          "group": "inline"
+        },
+        {
+          "command": "projects-plus-plus.deleteFolder",
+          "when": "view == projects"
         }
       ]
     }
