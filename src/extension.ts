@@ -6,7 +6,9 @@ import { ProjectsTreeProvider } from './treeview';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	vscode.window.createTreeView('projects', { treeDataProvider: new ProjectsTreeProvider() });
+	const projectsTreeProvider = new ProjectsTreeProvider();
+	vscode.window.registerTreeDataProvider('projects', projectsTreeProvider);
+	vscode.commands.registerCommand('projects-plus-plus.refreshEntry', () => projectsTreeProvider.refresh());
 }
 
 // This method is called when your extension is deactivated

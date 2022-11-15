@@ -38,6 +38,22 @@
           }
         }
       }
+    },
+    "commands": [
+      {
+        "command": "projects-plus-plus.refreshEntry",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "projects-plus-plus.refreshEntry",
+          "when": "view == projects",
+          "group": "navigation"
+        }
+      ]
     }
   },
   "scripts": {

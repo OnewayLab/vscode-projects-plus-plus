@@ -53,6 +53,13 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
             }
         }
     }
+
+    private _onDidChangeTreeData: vscode.EventEmitter<Item | undefined> = new vscode.EventEmitter<Item | undefined>();
+    readonly onDidChangeTreeData: vscode.Event<Item | undefined> = this._onDidChangeTreeData.event;
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire(undefined);
+    }
 }
 
 class Item extends vscode.TreeItem {
@@ -63,7 +70,7 @@ class Item extends vscode.TreeItem {
         public readonly type: string,
         public readonly uri: vscode.Uri
     ) {
-        super(name, vscode.TreeItemCollapsibleState.Collapsed);
+        super(name, type == "folder" ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
         this.iconPath = new vscode.ThemeIcon(type);
     }
 }
