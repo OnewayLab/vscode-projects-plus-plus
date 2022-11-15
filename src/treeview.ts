@@ -1,6 +1,5 @@
 import * as vscode from 'vscode'
 import * as path from 'path'
-import { setRootPath } from './config'
 
 export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     private rootPath?: string
@@ -16,11 +15,6 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
         if (projects) {
             this.projects = projects
-        }
-
-        // if the root path is not set, show a open dialog for the user to select a folder
-        if (!this.rootPath) {
-            setRootPath()
         }
     }
 
@@ -49,10 +43,23 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
             if (this.rootPath) {
                 return Promise.resolve([new Item(this.rootPath, "folder", vscode.Uri.file(this.rootPath))])
             } else {
-                setRootPath()
                 return Promise.reject("Root path not set")
             }
         }
+    }
+
+    setRootPath() {
+        vscode.window.showInformationMessage("Please set the root path where you want to search for projects")
+        vscode.window.showOpenDialog({
+            canSelectFiles: false,
+            canSelectFolders: true,
+            canSelectMany: false,
+        }).then((uris) => {
+            if (uris) {
+                var rootPath = uris[0].fsPath
+                vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", rootPath, false)
+            }
+        })
     }
 
     refresh(): void {
@@ -80,6 +87,7 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     }
 
     delete(item: Item): void {
+        this.markAsFolder(item)
         vscode.workspace.fs.delete(item.uri, { recursive: true })
         this.refresh()
     }

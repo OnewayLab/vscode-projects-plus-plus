@@ -8,7 +8,14 @@ import { ProjectsTreeProvider } from './treeview'
 export function activate(context: vscode.ExtensionContext) {
 	const projectsTreeProvider = new ProjectsTreeProvider()
 	vscode.window.registerTreeDataProvider('projects', projectsTreeProvider)
-	vscode.commands.registerCommand('projects-plus-plus.refreshEntry', () => projectsTreeProvider.refresh())
+	vscode.commands.registerCommand(
+		"projects-plus-plus.setRootPath",
+		() => projectsTreeProvider.setRootPath()
+	)
+	vscode.commands.registerCommand(
+		'projects-plus-plus.refreshEntry',
+		() => projectsTreeProvider.refresh()
+	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.openProject',
 		(item) => projectsTreeProvider.openProject(item)
