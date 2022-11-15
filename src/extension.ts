@@ -18,8 +18,16 @@ export function activate(context: vscode.ExtensionContext) {
 		(item) => projectsTreeProvider.newFolder(item)
 	)
 	vscode.commands.registerCommand(
-		'projects-plus-plus.deleteFolder',
-		(item) => projectsTreeProvider.deleteFolder(item)
+		'projects-plus-plus.delete',
+		(item) => projectsTreeProvider.delete(item)
+	)
+	vscode.commands.registerCommand(
+		'projects-plus-plus.markAsProject',
+		(item) => projectsTreeProvider.markAsProject(item)
+	)
+	vscode.commands.registerCommand(
+		'projects-plus-plus.markAsFolder',
+		(item) => projectsTreeProvider.markAsFolder(item)
 	)
 }
 

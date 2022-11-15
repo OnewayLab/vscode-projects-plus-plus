@@ -79,8 +79,30 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         })
     }
 
-    deleteFolder(item: Item): void {
+    delete(item: Item): void {
         vscode.workspace.fs.delete(item.uri, { recursive: true })
+        this.refresh()
+    }
+
+    markAsProject(item: Item): void {
+        let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
+        if (projects) {
+            this.projects = projects
+        }
+        this.projects.push(item.uri.fsPath)
+        vscode.workspace.getConfiguration("projects-plus-plus").update("projects", this.projects, false)
+        this.refresh()
+    }
+
+    markAsFolder(item: Item): void {
+        let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
+        if (projects) {
+            this.projects = projects
+        }
+        this.projects = this.projects.filter((project) => {
+            return project !== item.uri.fsPath
+        })
+        vscode.workspace.getConfiguration("projects-plus-plus").update("projects", this.projects, false)
         this.refresh()
     }
 }
@@ -97,8 +119,9 @@ class Item extends vscode.TreeItem {
             name,
             type == "folder" ?
                 vscode.TreeItemCollapsibleState.Collapsed :
-                vscode.TreeItemCollapsibleState.None
+                vscode.TreeItemCollapsibleState.None,
         )
+        this.contextValue = type
         this.iconPath = new vscode.ThemeIcon(type)
     }
 }

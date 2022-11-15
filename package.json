@@ -48,7 +48,7 @@
       {
         "command": "projects-plus-plus.openProject",
         "title": "Open project",
-        "icon": "$(add)"
+        "icon": "$(link-external)"
       },
       {
         "command": "projects-plus-plus.newFolder",
@@ -56,9 +56,17 @@
         "icon": "$(new-folder)"
       },
       {
-        "command": "projects-plus-plus.deleteFolder",
-        "title": "Delete folder",
-        "icon": "$(trashcan)"
+        "command": "projects-plus-plus.delete",
+        "title": "Delete"
+      },
+      {
+        "command": "projects-plus-plus.markAsProject",
+        "title": "Mark as project",
+        "icon": "$(bookmark)"
+      },
+      {
+        "command": "projects-plus-plus.markAsFolder",
+        "title": "Mark as folder"
       }
     ],
     "menus": {
@@ -77,12 +85,21 @@
         },
         {
           "command": "projects-plus-plus.newFolder",
-          "when": "view == projects",
+          "when": "view == projects && viewItem == folder",
           "group": "inline"
         },
         {
-          "command": "projects-plus-plus.deleteFolder",
+          "command": "projects-plus-plus.markAsProject",
+          "when": "view == projects && viewItem == folder",
+          "group": "inline"
+        },
+        {
+          "command": "projects-plus-plus.delete",
           "when": "view == projects"
+        },
+        {
+          "command": "projects-plus-plus.markAsFolder",
+          "when": "view == projects && viewItem == project"
         }
       ]
     }
