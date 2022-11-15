@@ -37,9 +37,9 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
                 }))
             }))
         } else {
-            if (!this.rootPath) {
-                this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get("rootPath")
-            }
+            // if (!this.rootPath) {
+            //     this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get("rootPath")
+            // }
             if (this.rootPath) {
                 return Promise.resolve([new Item(this.rootPath, "folder", vscode.Uri.file(this.rootPath))])
             } else {
@@ -48,16 +48,18 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         }
     }
 
-    setRootPath() {
+    async setRootPath() {
         vscode.window.showInformationMessage("Please set the root path where you want to search for projects")
         vscode.window.showOpenDialog({
             canSelectFiles: false,
             canSelectFolders: true,
             canSelectMany: false,
-        }).then((uris) => {
+        }).then(async (uris) => {
             if (uris) {
-                var rootPath = uris[0].fsPath
-                vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", rootPath, false)
+                this.rootPath = uris[0].fsPath
+                // await vscode.commands.executeCommand("workbench.action.saveWorkspaceAs")
+                await vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", this.rootPath, false)
+                this.refresh()
             }
         })
     }
