@@ -3,6 +3,7 @@
   "displayName": "Projects++",
   "description": "",
   "version": "0.0.1",
+  "repository": "https://github.com/OnewayLab/vscode-projects-plus-plus",
   "engines": {
     "vscode": "^1.73.0"
   },
