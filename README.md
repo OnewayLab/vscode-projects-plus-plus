@@ -1,71 +1,54 @@
-# vscode-projects-plus-plus README
+# Projects++
 
-This is the README for your extension "vscode-projects-plus-plus". After writing up a brief description, we recommend including the following sections.
+Projects++ 是一个用于管理项目的 VSCode 拓展。大多数此类拓展仅支持通过手动添加标签的方式对项目进行分类管理，而本拓展可以自动检索并展示指定目录下的所有文件夹，您可以方便地将某个文件夹标记为一个项目根目录，并且将它添加到 VSCode 工作区或从工作区移除。
 
-## Features
+Projects++ is a VSCode extension to manage your projects. Most of the extensions of this kind only support classifying projects by manually adding tags, while this extension can automatically retrieve and display all folders under the specified directory, so you can easily mark a folder as a project root, and add it to the VSCode workspace or remove it from the workspace.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 安装 Install
 
-For example if there is an image subfolder under your extension project workspace:
+在完成 [开发计划](#开发计划%20Development%20Plan) 前本拓展将不会在 VSCode 拓展市场中发布，如果您想提前体验此拓展，可以在本拓展 github 页面的 Release 中获取 vsce 包并使用如下命令安装到您的 VSCode：
 
-\!\[feature X\]\(images/feature-x.png\)
+This extension will NOT be published to the VS Code Extension Marketplace until the [Development Plan](#开发计划%20Development%20Plan) is completed. If you want to try this extension in advance, you can get the vsce package in the Release of this extension's github page and use the following command to install it to your VSCode:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```shell
+code --install-extension projects-plus-plus-0.0.1.vsix
+```
 
-## Requirements
+## 功能 Features
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![1668567265583](assets/1668567265583.gif)
 
-## Extension Settings
+* 自动检索并展示指定目录下的文件夹（Retrieve and display all folders under the specified directory）；
+* 将文件夹标记为项目根目录（Mark a folder as a project root）；
+* 一键将目录或项目添加到 VSCode 工作区（Add a directory or project to the VSCode workspace with one click）；
+* 从 VSCode 工作区移除目录（Remove a folder from the VSCode workspace）；
+* 新建和删除文件夹（Create and delete folders）。
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## 命令 Commands
 
-For example:
+* `Projects: Set root path`：设置开始检索项目的根路径（Set the root path to retrive projects）；
+* `Projects: Refresh`：刷新项目视图（Refersh the projects tree view）。
 
-This extension contributes the following settings:
+## 设置 Settings
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `projects-plus-plus.rootPath`：开始检索项目的根路径（The root path to retrive projects）；
+* `projects-plus-plus.projects`：项目路径的列表（A list of project paths）。
 
-## Known Issues
+## 已知问题 Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+* 添加第一个文件夹到工作区时会短暂出现欢迎页（The welcome view appear when add the first folder to the workspace）。
 
-## Release Notes
+## 开发计划 Development Plan
 
-Users appreciate release notes as you update your extension.
+* 重构代码（Refactor the code）；
+* 打开时 `Projects` 视图自动展开到已经在工作区打开的项目或文件夹（Expand the `Projects` tree view to the projects or folders already opened in the workspace when open VSCode）；
+* 使用模板创建项目（Create projects with templates）；
+* 自动识别 vscode 项目、git 项目、cmake 项目等（Automatically recognize vscode projects, git projects, cmake projects, etc.）。
 
-### 1.0.0
+## 版本 Release Notes
 
-Initial release of ...
+### 0.0.1
 
-### 1.0.1
+初始版本，实现了项目检索、添加和删除等基本功能。
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial version, implemented basic functions such as project retrieval, addition and deletion.
