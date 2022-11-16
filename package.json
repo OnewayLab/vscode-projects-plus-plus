@@ -33,7 +33,7 @@
       "properties": {
         "projects-plus-plus.rootPath": {
           "type": "string",
-          "description": "Root Path of the Workspace"
+          "description": "Root Path to Retrive Projects"
         },
         "projects-plus-plus.projects": {
           "type": "array",
@@ -48,43 +48,69 @@
     "commands": [
       {
         "command": "projects-plus-plus.setRootPath",
-        "title": "Set Root Path"
+        "title": "Projects: Set root path"
       },
       {
         "command": "projects-plus-plus.refreshEntry",
-        "title": "Refresh",
+        "title": "Projects: Refresh",
         "icon": "$(refresh)"
       },
       {
         "command": "projects-plus-plus.openInWorkspace",
-        "title": "Open in workspace",
+        "title": "Projects: Open in workspace",
         "icon": "$(link-external)"
       },
       {
         "command": "projects-plus-plus.removeFromWorkspace",
-        "title": "Remove from workspace",
+        "title": "Projects: Remove from workspace",
         "icon": "$(x)"
       },
       {
         "command": "projects-plus-plus.newFolder",
-        "title": "New folder",
+        "title": "Projects: New folder",
         "icon": "$(new-folder)"
       },
       {
         "command": "projects-plus-plus.delete",
-        "title": "Delete"
+        "title": "Projects: Delete"
       },
       {
         "command": "projects-plus-plus.markAsProject",
-        "title": "Mark as project",
+        "title": "Projects: Mark as project",
         "icon": "$(bookmark)"
       },
       {
         "command": "projects-plus-plus.markAsFolder",
-        "title": "Mark as folder"
+        "title": "Projects: Mark as folder"
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "projects-plus-plus.openInWorkspace",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.removeFromWorkspace",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.newFolder",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.delete",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.markAsProject",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.markAsFolder",
+          "when": "false"
+        }
+      ],
       "view/title": [
         {
           "command": "projects-plus-plus.refreshEntry",
