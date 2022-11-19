@@ -40,10 +40,11 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 
 ## 开发计划 Development Plan
 
-* 重构代码（Refactor the code）；
-* 打开时 `Projects` 视图自动展开到已经在工作区打开的项目或文件夹（Expand the `Projects` tree view to the projects or folders already opened in the workspace when open VSCode）；
-* 使用模板创建项目（Create projects with templates）；
-* 自动识别 vscode 项目、git 项目、cmake 项目等（Automatically recognize vscode projects, git projects, cmake projects, etc.）。
+- [ ] 重构代码（Refactor the code）；
+- [ ] 增加工作区保存与切换功能；
+- [ ] 打开时 `Projects` 视图自动展开到已经在工作区打开的项目或文件夹（Expand the `Projects` tree view to the projects or folders already opened in the workspace when open VSCode）；
+- [ ] 使用模板创建项目（Create projects with templates）；
+- [ ] 自动识别 vscode 项目、git 项目、cmake 项目等（Automatically recognize vscode projects, git projects, cmake projects, etc.）。
 
 ## 版本 Release Notes
 
