@@ -3,6 +3,8 @@
   "displayName": "Projects++",
   "description": "",
   "version": "0.0.1",
+  "publisher": "Canbin Huang",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": "https://github.com/OnewayLab/vscode-projects-plus-plus",
   "engines": {
     "vscode": "^1.73.0"
@@ -10,6 +12,18 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "project",
+    "workspace",
+    "manager",
+    "switch",
+    "folder",
+    "git"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "icon": "images/icon.png",
   "activationEvents": [
     "onView:projects"
   ],
