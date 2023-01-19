@@ -66,7 +66,7 @@
         "title": "Projects: Set root path"
       },
       {
-        "command": "projects-plus-plus.refreshEntry",
+        "command": "projects-plus-plus.refreshProjects",
         "title": "Projects: Refresh",
         "icon": "$(refresh)"
       },
@@ -128,7 +128,7 @@
       ],
       "view/title": [
         {
-          "command": "projects-plus-plus.refreshEntry",
+          "command": "projects-plus-plus.refreshProjects",
           "when": "view == projects",
           "group": "navigation"
         },

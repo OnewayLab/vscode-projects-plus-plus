@@ -3,9 +3,9 @@ import * as path from 'path'
 
 export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     private rootPath?: string
-    private projects: string[] = []
-    private _onDidChangeTreeData: vscode.EventEmitter<Item | undefined> = new vscode.EventEmitter<Item | undefined>()
-    readonly onDidChangeTreeData: vscode.Event<Item | undefined> = this._onDidChangeTreeData.event
+    private projects: Set<string> = new Set()
+    private _onDidChangeTreeData = new vscode.EventEmitter<Item | undefined | null | void>()
+    readonly onDidChangeTreeData = this._onDidChangeTreeData.event
 
     constructor() {
         // get the root path
@@ -14,7 +14,7 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         // get projects
         let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
         if (projects) {
-            this.projects = projects
+            this.projects = new Set(projects)
         }
 
         // subscribe to configuration changes
@@ -31,22 +31,18 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
 
     getChildren(element?: Item): Thenable<Item[]> {
         if (element) {
-            return new Promise(resolve => vscode.workspace.fs.readDirectory(element.uri).then((entries) => {
-                resolve(entries.filter((entry) => {
-                    return entry[1] === vscode.FileType.Directory
-                }).map((entry) => {
-                    let fullPath = path.join(element.uri.fsPath, entry[0])
-                    return new Item(
-                        entry[0],
-                        this.projects.includes(fullPath) ? "project" : "folder",
-                        vscode.Uri.joinPath(element.uri, entry[0])
+            return Promise.resolve(
+                vscode.workspace.fs.readDirectory(element.uri).then(entries =>
+                    entries.filter(entry => entry[1] === vscode.FileType.Directory).map(entry =>
+                        new Item(
+                            entry[0],
+                            this.projects.has(path.join(element.uri.fsPath, entry[0])) ? "project" : "folder",
+                            vscode.Uri.joinPath(element.uri, entry[0])
+                        )
                     )
-                }))
-            }))
+                )
+            )
         } else {
-            // if (!this.rootPath) {
-            //     this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get("rootPath")
-            // }
             if (this.rootPath) {
                 return Promise.resolve([new Item(this.rootPath, "folder", vscode.Uri.file(this.rootPath))])
             } else {
@@ -55,26 +51,23 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         }
     }
 
-    async setRootPath() {
-        vscode.window.showInformationMessage("Please set the root path where you want to search for projects")
+    setRootPath() {
         vscode.window.showOpenDialog({
             canSelectFiles: false,
             canSelectFolders: true,
             canSelectMany: false,
-        }).then(async (uris) => {
+        }).then(uris => {
             if (uris) {
-                this.rootPath = uris[0].fsPath
-                // await vscode.commands.executeCommand("workbench.action.saveWorkspaceAs")
-                await vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", this.rootPath, false)
+                vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", uris[0].fsPath, false)
             }
         })
     }
 
-    refresh(): void {
-        this._onDidChangeTreeData.fire(undefined)
+    refresh() {
+        this._onDidChangeTreeData.fire()
     }
 
-    openInWorkspace(item: Item): void {
+    openInWorkspace(item: Item) {
         vscode.workspace.updateWorkspaceFolders(
             vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders.length : 0,
             null,
@@ -89,7 +82,7 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         const originalClipboard = await vscode.env.clipboard.readText()
         await vscode.commands.executeCommand("copyFilePath")
         const filePath = await vscode.env.clipboard.readText()
-        await vscode.env.clipboard.writeText(originalClipboard)
+        vscode.env.clipboard.writeText(originalClipboard)
 
         const workspaceFolder = vscode.workspace.getWorkspaceFolder(vscode.Uri.file(filePath))
         if (workspaceFolder) {
@@ -100,11 +93,11 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         }
     }
 
-    newFolder(item: Item): void {
+    newFolder(item: Item) {
         vscode.window.showInputBox({
             prompt: "Enter the name of the new folder",
             placeHolder: "New folder"
-        }).then((folderName) => {
+        }).then(folderName => {
             if (folderName) {
                 vscode.workspace.fs.createDirectory(vscode.Uri.joinPath(item.uri, folderName))
             }
@@ -112,30 +105,19 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         })
     }
 
-    delete(item: Item): void {
+    delete(item: Item) {
         this.markAsFolder(item)
         vscode.workspace.fs.delete(item.uri, { recursive: true })
         this.refresh()
     }
 
-    markAsProject(item: Item): void {
-        let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
-        if (projects) {
-            this.projects = projects
-        }
-        this.projects.push(item.uri.fsPath)
+    markAsProject(item: Item) {
+        this.projects.add(item.uri.fsPath)
         vscode.workspace.getConfiguration("projects-plus-plus").update("projects", this.projects, false)
-        this.refresh()
     }
 
-    markAsFolder(item: Item): void {
-        let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
-        if (projects) {
-            this.projects = projects
-        }
-        this.projects = this.projects.filter((project) => {
-            return project !== item.uri.fsPath
-        })
+    markAsFolder(item: Item) {
+        this.projects.delete(item.uri.fsPath)
         vscode.workspace.getConfiguration("projects-plus-plus").update("projects", this.projects, false)
         this.refresh()
     }
