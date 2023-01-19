@@ -26,17 +26,18 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 
 ## 命令 Commands
 
-* `Projects: Set root path`：设置开始检索项目的根路径（Set the root path to retrive projects）；
-* `Projects: Refresh`：刷新项目视图（Refersh the projects tree view）。
+* `Projects: Set root path`：设置开始检索项目的根路径（Set the root path to retrieve projects）；
+* `Projects: Refresh`：刷新项目视图（Refresh the projects tree view）。
 
 ## 设置 Settings
 
-* `projects-plus-plus.rootPath`：开始检索项目的根路径（The root path to retrive projects）；
+* `projects-plus-plus.rootPath`：开始检索项目的根路径（The root path to retrieve projects）；
 * `projects-plus-plus.projects`：项目路径的列表（A list of project paths）。
 
 ## 已知问题 Known Issues
 
 * 添加第一个文件夹到工作区时会短暂出现欢迎页（The welcome view appear when add the first folder to the workspace）。
+* 刚启动 VSCode 时点击 `X` 无法将文件夹从工作区移除，因为此时插件尚未激活（Can not remove a folder from the workspace when click `X` just after start VSCode, because the extension is not activated at this time）。
 
 ## 开发计划 Development Plan
 
