@@ -48,7 +48,7 @@
       "properties": {
         "projects-plus-plus.rootPath": {
           "type": "string",
-          "description": "Root Path to Retrive Projects"
+          "description": "Root Path to Retrieve Projects"
         },
         "projects-plus-plus.projects": {
           "type": "array",
