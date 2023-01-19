@@ -16,6 +16,13 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         if (projects) {
             this.projects = projects
         }
+
+        // subscribe to configuration changes
+        vscode.workspace.onDidChangeConfiguration((event) => {
+            if (event.affectsConfiguration("projects-plus-plus")) {
+                this.refresh()
+            }
+        })
     }
 
     getTreeItem(element: Item): vscode.TreeItem {
@@ -59,7 +66,6 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
                 this.rootPath = uris[0].fsPath
                 // await vscode.commands.executeCommand("workbench.action.saveWorkspaceAs")
                 await vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", this.rootPath, false)
-                this.refresh()
             }
         })
     }
