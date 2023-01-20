@@ -31,7 +31,9 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         if (element) {
             return Promise.resolve(
                 vscode.workspace.fs.readDirectory(element.uri).then(entries =>
-                    entries.filter(entry => entry[1] === vscode.FileType.Directory).map(entry =>
+                    entries.filter(entry =>
+                        entry[1] === vscode.FileType.Directory && !entry[0].startsWith(".")
+                    ).map(entry =>
                         new Item(
                             entry[0],
                             this.projects.has(path.join(element.uri.fsPath, entry[0])) ? "project" : "folder",
