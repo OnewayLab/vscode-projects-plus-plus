@@ -37,12 +37,12 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 ## 已知问题 Known Issues
 
 * 添加第一个文件夹到工作区时会短暂出现欢迎页（The welcome view appear when add the first folder to the workspace）。
-* 刚启动 VSCode 时点击 `X` 无法将文件夹从工作区移除，因为此时插件尚未激活（Can not remove a folder from the workspace when click `X` just after start VSCode, because the extension is not activated at this time）。
 
 ## 开发计划 Development Plan
 
-- [ ] 重构代码（Refactor the code）；
-- [ ] 增加工作区保存与切换功能；
+- [X] 重构代码（Refactor the code）；
+- [ ] 忽略 `Projects` 视图中以 `.` 开头的文件夹（Ignore folders beginning with `.` in the `Projects` tree view）；
+- [ ] 增加工作区保存与切换功能（Save and switch workspace）；
 - [ ] 打开时 `Projects` 视图自动展开到已经在工作区打开的项目或文件夹（Expand the `Projects` tree view to the projects or folders already opened in the workspace when open VSCode）；
 - [ ] 使用模板创建项目（Create projects with templates）；
 - [ ] 自动识别 vscode 项目、git 项目、cmake 项目等（Automatically recognize vscode projects, git projects, cmake projects, etc.）。
