@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.openInWorkspace',
-		(item) => projectsTreeProvider.openInWorkspace(item)
+		item => projectsTreeProvider.openInWorkspace(item)
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.removeFromWorkspace',
@@ -25,19 +25,19 @@ export function activate(context: vscode.ExtensionContext) {
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.newFolder',
-		(item) => projectsTreeProvider.newFolder(item)
+		item => projectsTreeProvider.newFolder(item)
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.delete',
-		(item) => projectsTreeProvider.delete(item)
+		item => projectsTreeProvider.delete(item)
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.markAsProject',
-		(item) => projectsTreeProvider.markAsProject(item)
+		item => projectsTreeProvider.markAsProject(item)
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.markAsFolder',
-		(item) => projectsTreeProvider.markAsFolder(item)
+		item => projectsTreeProvider.markAsFolder(item)
 	)
 }
 

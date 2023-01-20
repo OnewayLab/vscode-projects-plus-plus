@@ -3,9 +3,9 @@ import * as path from 'path'
 
 export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     private rootPath?: string
-    private projects: Set<string> = new Set()
+    private projects: Set<string>
     private _onDidChangeTreeData = new vscode.EventEmitter<Item | undefined | null | void>()
-    readonly onDidChangeTreeData = this._onDidChangeTreeData.event
+    public readonly onDidChangeTreeData = this._onDidChangeTreeData.event
 
     constructor() {
         // get the root path
@@ -13,9 +13,7 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
 
         // get projects
         let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
-        if (projects) {
-            this.projects = new Set(projects)
-        }
+        this.projects = projects ? new Set(projects) : new Set()
 
         // subscribe to configuration changes
         vscode.workspace.onDidChangeConfiguration((event) => {
