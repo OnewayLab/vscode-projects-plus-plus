@@ -6,6 +6,7 @@
 
 import * as vscode from 'vscode'
 import * as path from 'path'
+import * as fs from 'fs'
 
 export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     private rootPath?: string
@@ -39,13 +40,15 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
                 vscode.workspace.fs.readDirectory(element.uri).then(entries =>
                     entries.filter(entry =>
                         entry[1] === vscode.FileType.Directory && !entry[0].startsWith(".")
-                    ).map(entry =>
-                        new Item(
+                    ).map(entry => {
+                        let fullPath = path.join(element.uri.fsPath, entry[0])
+                        return new Item(
                             entry[0],
-                            this.projects.has(path.join(element.uri.fsPath, entry[0])) ? "project" : "folder",
+                            this.projects.has(fullPath) ? "project" :
+                                fs.existsSync(path.join(fullPath, ".git")) ? "git-branch" : "folder",
                             vscode.Uri.joinPath(element.uri, entry[0])
                         )
-                    )
+                    })
                 )
             )
         } else {
@@ -160,9 +163,7 @@ class Item extends vscode.TreeItem {
     ) {
         super(
             name,
-            type == "folder" ?
-                vscode.TreeItemCollapsibleState.Collapsed :
-                vscode.TreeItemCollapsibleState.None,
+            type == "project" ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Collapsed,
         )
         this.contextValue = type
         this.iconPath = new vscode.ThemeIcon(type)
