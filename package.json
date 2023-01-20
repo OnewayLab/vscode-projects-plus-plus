@@ -40,7 +40,7 @@
     "viewsWelcome": [
       {
         "view": "projects",
-        "contents": "Projects++ is a simple extension that allows you to manage your projects in a specific folder.\n[Set Root Path](command:projects-plus-plus.setRootPath)"
+        "contents": "Projects++ is a simple extension that allows you to manage your projects in a specific folder.\nPlease save the workspace as a file and then set the root path to retrieve projects.\n[Set Root Path](command:projects-plus-plus.setRootPath)"
       }
     ],
     "configuration": {
