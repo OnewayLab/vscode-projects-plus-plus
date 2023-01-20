@@ -64,6 +64,14 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
     }
 
     refresh() {
+        // get root path
+        this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get<string>("rootPath")
+
+        // get projects
+        let projects = vscode.workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
+        this.projects = projects ? new Set(projects) : new Set()
+
+        // update tree view
         this._onDidChangeTreeData.fire()
     }
 
@@ -113,12 +121,12 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
 
     markAsProject(item: Item) {
         this.projects.add(item.uri.fsPath)
-        vscode.workspace.getConfiguration("projects-plus-plus").update("projects", this.projects, false)
+        vscode.workspace.getConfiguration("projects-plus-plus").update("projects", Array.from(this.projects), false)
     }
 
     markAsFolder(item: Item) {
         this.projects.delete(item.uri.fsPath)
-        vscode.workspace.getConfiguration("projects-plus-plus").update("projects", this.projects, false)
+        vscode.workspace.getConfiguration("projects-plus-plus").update("projects", Array.from(this.projects), false)
         this.refresh()
     }
 }
