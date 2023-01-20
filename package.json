@@ -76,31 +76,31 @@
       },
       {
         "command": "projects-plus-plus.openInWorkspace",
-        "title": "Projects: Open in workspace",
+        "title": "Open in workspace",
         "icon": "$(link-external)"
       },
       {
         "command": "projects-plus-plus.removeFromWorkspace",
-        "title": "Projects: Remove from workspace",
+        "title": "Remove from workspace",
         "icon": "$(x)"
       },
       {
         "command": "projects-plus-plus.newFolder",
-        "title": "Projects: New folder",
+        "title": "New folder",
         "icon": "$(new-folder)"
       },
       {
         "command": "projects-plus-plus.delete",
-        "title": "Projects: Delete"
+        "title": "Delete"
       },
       {
         "command": "projects-plus-plus.markAsProject",
-        "title": "Projects: Mark as project",
+        "title": "Mark as project",
         "icon": "$(bookmark)"
       },
       {
         "command": "projects-plus-plus.markAsFolder",
-        "title": "Projects: Mark as folder"
+        "title": "Mark as folder"
       }
     ],
     "menus": {
