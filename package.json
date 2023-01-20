@@ -4,7 +4,7 @@
   "description": "",
   "version": "0.0.1",
   "publisher": "Canbin Huang",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "SEE LICENSE IN LICENSE",
   "repository": "https://github.com/OnewayLab/vscode-projects-plus-plus",
   "engines": {
     "vscode": "^1.73.0"
