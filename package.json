@@ -25,7 +25,7 @@
   ],
   "icon": "images/icon.png",
   "activationEvents": [
-    "onView:projects"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
