@@ -26,7 +26,8 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 
 ## 命令 Commands
 
-* `Projects: Set root path`：设置开始检索项目的根路径（Set the root path to retrieve projects）；
+* `Projects: Set global root path`：设置开始检索项目的根路径并保存为全局设置（Set the root path to retrieve projects from, which will be save as a global setting）；
+* `Projects: Set workspace root path`：设置开始检索项目的根路径并保存为工作区设置（Set the root path to retrieve projects from, which will be save as a workspace setting）；
 * `Projects: Refresh`：刷新项目视图（Refresh the projects tree view）。
 
 ## 设置 Settings
@@ -42,7 +43,6 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 
 - [X] 重构代码（Refactor the code）；
 - [X] 忽略 `Projects` 视图中以 `.` 开头的文件夹（Ignore folders beginning with `.` in the `Projects` tree view）；
-- [ ] 增加工作区保存与切换功能（Save and switch workspace）；
 - [ ] 打开时 `Projects` 视图自动展开到已经在工作区打开的项目或文件夹（Expand the `Projects` tree view to the projects or folders already opened in the workspace when open VSCode）；
 - [ ] 使用模板创建项目（Create projects with templates）；
 - [ ] 自动识别 vscode 项目、git 项目、cmake 项目等（Automatically recognize vscode projects, git projects, cmake projects, etc.）。

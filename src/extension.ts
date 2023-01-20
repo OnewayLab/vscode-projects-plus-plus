@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Extension entry point
+ * @author huangcb01@foxmail.com (Canbin Huang)
+ * @license MIT
+ */
+
 import * as vscode from 'vscode'
 import { ProjectsTreeProvider } from './treeview'
 
@@ -6,8 +12,12 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider('projects', projectsTreeProvider)
 
 	vscode.commands.registerCommand(
-		"projects-plus-plus.setRootPath",
-		() => projectsTreeProvider.setRootPath()
+		"projects-plus-plus.setGlobalRootPath",
+		() => projectsTreeProvider.setRootPath(true)
+	)
+	vscode.commands.registerCommand(
+		"projects-plus-plus.setWorkspaceRootPath",
+		() => projectsTreeProvider.setRootPath(false)
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.refreshProjects',

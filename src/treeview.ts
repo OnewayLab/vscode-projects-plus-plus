@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Tree view of extension Projects++ for Visual Studio Code.
+ * @author huangcb01@foxmail.com (Canbin Huang)
+ * @license MIT
+ */
+
 import * as vscode from 'vscode'
 import * as path from 'path'
 
@@ -51,18 +57,25 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         }
     }
 
-    setRootPath() {
+    /**
+     * Set the root path to retrieve projects from.
+     * @param global Whether to set the root path globally or for the current workspace.
+     */
+    setRootPath(global: boolean = false) {
         vscode.window.showOpenDialog({
             canSelectFiles: false,
             canSelectFolders: true,
             canSelectMany: false,
         }).then(uris => {
             if (uris) {
-                vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", uris[0].fsPath, false)
+                vscode.workspace.getConfiguration("projects-plus-plus").update("rootPath", uris[0].fsPath, global)
             }
         })
     }
 
+    /**
+     * Reload rootPath and projects from configuration and refresh the tree view.
+     */
     refresh() {
         // get root path
         this.rootPath = vscode.workspace.getConfiguration("projects-plus-plus").get<string>("rootPath")
@@ -75,6 +88,9 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         this._onDidChangeTreeData.fire()
     }
 
+    /**
+     * Add the selected folder to the workspace.
+     */
     openInWorkspace(item: Item) {
         vscode.workspace.updateWorkspaceFolders(
             vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders.length : 0,
@@ -83,6 +99,9 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
         )
     }
 
+    /**
+     * Remove the selected folder from the workspace.
+     */
     async removeFromWorkspace() {
         // VSCode doesn't provide a way to get the selected folder in the explorer
         // so we have to use "copyFilePath" command and get it from the clipboard :(
