@@ -41,7 +41,7 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 ## 开发计划 Development Plan
 
 - [X] 重构代码（Refactor the code）；
-- [ ] 忽略 `Projects` 视图中以 `.` 开头的文件夹（Ignore folders beginning with `.` in the `Projects` tree view）；
+- [X] 忽略 `Projects` 视图中以 `.` 开头的文件夹（Ignore folders beginning with `.` in the `Projects` tree view）；
 - [ ] 增加工作区保存与切换功能（Save and switch workspace）；
 - [ ] 打开时 `Projects` 视图自动展开到已经在工作区打开的项目或文件夹（Expand the `Projects` tree view to the projects or folders already opened in the workspace when open VSCode）；
 - [ ] 使用模板创建项目（Create projects with templates）；
