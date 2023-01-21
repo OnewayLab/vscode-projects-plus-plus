@@ -40,15 +40,13 @@ export class ProjectsTreeProvider implements vscode.TreeDataProvider<Item> {
                 vscode.workspace.fs.readDirectory(element.uri).then(entries =>
                     entries.filter(entry =>
                         entry[1] === vscode.FileType.Directory && !entry[0].startsWith(".")
-                    ).map(entry => {
-                        let fullPath = path.join(element.uri.fsPath, entry[0])
-                        return new Item(
+                    ).map(entry =>
+                        new Item(
                             entry[0],
-                            this.projects.has(fullPath) ? "project" :
-                                fs.existsSync(path.join(fullPath, ".git")) ? "git-branch" : "folder",
+                            this.projects.has(path.join(element.uri.fsPath, entry[0])) ? "project" : "folder",
                             vscode.Uri.joinPath(element.uri, entry[0])
                         )
-                    })
+                    )
                 )
             )
         } else {
@@ -166,6 +164,6 @@ class Item extends vscode.TreeItem {
             type == "project" ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Collapsed,
         )
         this.contextValue = type
-        this.iconPath = new vscode.ThemeIcon(type)
+        this.iconPath = new vscode.ThemeIcon(fs.existsSync(path.join(uri.fsPath, ".git")) ? "git-branch" : type)
     }
 }
