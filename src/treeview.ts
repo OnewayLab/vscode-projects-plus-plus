@@ -147,7 +147,9 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
                 const targetUri = Uri.joinPath(item.uri, name)
                 if (type === "project") {
                     const sourceUri = Uri.file(path.join(template.description, template.label))
-                    workspace.fs.copy(sourceUri, targetUri)
+                    workspace.fs.copy(sourceUri, targetUri).then(() => {
+                        workspace.fs.delete(Uri.joinPath(targetUri, ".git"), { recursive: true })
+                    })
                     this.projects.add(targetUri.fsPath)
                     await workspace.getConfiguration("projects-plus-plus").update("projects", Array.from(this.projects))
                     workspace.updateWorkspaceFolders(
