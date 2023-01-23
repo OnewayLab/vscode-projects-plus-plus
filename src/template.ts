@@ -1,7 +1,7 @@
 /**
  * @fileoverview Project template manager of extension Projects++ for Visual Studio Code.
  * @author huangcb01@foxmail.com (Canbin Huang)
- * @license MIT
+ * @license MIT License. See LICENSE in the project root for license information.
  */
 
 import { Uri, workspace } from 'vscode'
@@ -33,7 +33,3 @@ export async function getTemplates(): Promise<[string, string][]> {
 export function createProject(templatePath: string, projectUri: Uri) {
 
 }
-
-// function copyTemplate(src: string, dest: string) {
-//     fs.writeFileSync(dest, fs.readFileSync(src));
-// }

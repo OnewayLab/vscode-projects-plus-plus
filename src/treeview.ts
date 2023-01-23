@@ -1,14 +1,15 @@
 /**
  * @fileoverview Tree view of extension Projects++ for Visual Studio Code.
  * @author huangcb01@foxmail.com (Canbin Huang)
- * @license MIT
+ * @license MIT License. See LICENSE in the project root for license information.
  */
 
 import { window, workspace, env, commands } from 'vscode'
 import { Uri, TreeDataProvider, TreeItem, TreeItemCollapsibleState, EventEmitter, FileType, ThemeIcon } from 'vscode'
 import * as path from 'path'
-import * as templates from './template'
 import * as fs from 'fs'
+import * as template from './template'
+import * as configuration from './configuration'
 
 export class ProjectsTreeProvider implements TreeDataProvider<Item> {
     private rootPath?: string
@@ -17,19 +18,12 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
     public readonly onDidChangeTreeData = this._onDidChangeTreeData.event
 
     constructor() {
-        // get the root path
-        this.rootPath = workspace.getConfiguration("projects-plus-plus").get<string>("rootPath")
+        // get the root path and projects
+        this.rootPath = configuration.rootPath.get()
+        this.projects = new Set(configuration.projects.get())
 
-        // get projects
-        let projects = workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
-        this.projects = projects ? new Set(projects) : new Set()
-
-        // subscribe to configuration changes
-        workspace.onDidChangeConfiguration((event) => {
-            if (event.affectsConfiguration("projects-plus-plus")) {
-                this.refresh()
-            }
-        })
+        // register on configuration changes
+        configuration.registerConfigurationChangeCallback(() => this.refresh())
     }
 
     getTreeItem(element: Item): TreeItem {
@@ -61,31 +55,12 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
     }
 
     /**
-     * Set the root path to retrieve projects from.
-     * @param global Whether to set the root path globally or for the current workspace.
-     */
-    setRootPath(global: boolean = false) {
-        window.showOpenDialog({
-            canSelectFiles: false,
-            canSelectFolders: true,
-            canSelectMany: false,
-        }).then(uris => {
-            if (uris) {
-                workspace.getConfiguration("projects-plus-plus").update("rootPath", uris[0].fsPath, global)
-            }
-        })
-    }
-
-    /**
      * Reload rootPath and projects from configuration and refresh the tree view.
      */
     refresh() {
-        // get root path
-        this.rootPath = workspace.getConfiguration("projects-plus-plus").get<string>("rootPath")
-
-        // get projects
-        let projects = workspace.getConfiguration("projects-plus-plus").get<Array<string>>("projects")
-        this.projects = projects ? new Set(projects) : new Set()
+        // get root path and projects
+        this.rootPath = configuration.rootPath.get()
+        this.projects = new Set(configuration.projects.get())
 
         // update tree view
         this._onDidChangeTreeData.fire()
@@ -95,11 +70,7 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
      * Add the selected folder to the workspace.
      */
     openInWorkspace(item: Item) {
-        workspace.updateWorkspaceFolders(
-            workspace.workspaceFolders ? workspace.workspaceFolders.length : 0,
-            null,
-            { uri: item.uri }
-        )
+        configuration.workspaceFolders.add(item.uri)
     }
 
     /**
@@ -114,31 +85,25 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
         const filePath = await env.clipboard.readText()
         env.clipboard.writeText(originalClipboard)
 
-        const workspaceFolder = workspace.getWorkspaceFolder(Uri.file(filePath))
-        if (workspaceFolder) {
-            workspace.updateWorkspaceFolders(
-                workspace.workspaceFolders ? workspace.workspaceFolders.indexOf(workspaceFolder) : 0,
-                1
-            )
-        }
+        configuration.workspaceFolders.remove(Uri.file(filePath))
     }
 
     /**
      * Create a folder or project using a template.
      */
     async create(item: Item) {
-        const template = await window.showQuickPick(
+        const selectedTemplate = await window.showQuickPick(
             [
                 { label: "folder", description: "Create a new folder" },
-                ...(await templates.getTemplates()).map(template => ({
-                    label: template[0],
-                    description: template[1]
+                ...(await template.getTemplates()).map(t => ({
+                    label: t[0],
+                    description: t[1]
                 }))
             ],
             { placeHolder: "Select a template" }
         )
-        if (template) {
-            const type = template.label === "folder" ? "folder" : "project"
+        if (selectedTemplate) {
+            const type = selectedTemplate.label === "folder" ? "folder" : "project"
             const name = await window.showInputBox({
                 prompt: "Enter the name of the new " + type,
                 placeHolder: "New " + type
@@ -146,17 +111,13 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
             if (name) {
                 const targetUri = Uri.joinPath(item.uri, name)
                 if (type === "project") {
-                    const sourceUri = Uri.file(path.join(template.description, template.label))
+                    const sourceUri = Uri.file(path.join(selectedTemplate.description, selectedTemplate.label))
                     workspace.fs.copy(sourceUri, targetUri).then(() => {
                         workspace.fs.delete(Uri.joinPath(targetUri, ".git"), { recursive: true })
                     })
                     this.projects.add(targetUri.fsPath)
-                    await workspace.getConfiguration("projects-plus-plus").update("projects", Array.from(this.projects))
-                    workspace.updateWorkspaceFolders(
-                        workspace.workspaceFolders ? workspace.workspaceFolders.length : 0,
-                        null,
-                        { uri: targetUri }
-                    )
+                    await configuration.projects.set(Array.from(this.projects))
+                    configuration.workspaceFolders.add(targetUri)
                 } else {
                     workspace.fs.createDirectory(targetUri)
                     this.refresh()
@@ -173,13 +134,12 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
 
     markAsProject(item: Item) {
         this.projects.add(item.uri.fsPath)
-        workspace.getConfiguration("projects-plus-plus").update("projects", Array.from(this.projects), false)
+        configuration.projects.set(Array.from(this.projects))
     }
 
     markAsFolder(item: Item) {
         this.projects.delete(item.uri.fsPath)
-        workspace.getConfiguration("projects-plus-plus").update("projects", Array.from(this.projects), false)
-        this.refresh()
+        configuration.projects.set(Array.from(this.projects))
     }
 }
 

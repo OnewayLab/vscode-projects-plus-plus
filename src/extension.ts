@@ -1,54 +1,73 @@
 /**
  * @fileoverview Extension entry point
  * @author huangcb01@foxmail.com (Canbin Huang)
- * @license MIT
+ * @license MIT License. See LICENSE in the project root for license information.
  */
 
-import * as vscode from 'vscode'
+import { window, commands, ExtensionContext } from 'vscode'
 import { ProjectsTreeProvider } from './treeview'
+import * as configuration from './configuration'
 
-export function activate(context: vscode.ExtensionContext) {
-	const projectsTreeProvider = new ProjectsTreeProvider()
-	vscode.window.registerTreeDataProvider('projects', projectsTreeProvider)
+export function activate(context: ExtensionContext) {
+    const projectsTreeProvider = new ProjectsTreeProvider()
+    window.registerTreeDataProvider('projects', projectsTreeProvider)
 
-	vscode.commands.registerCommand(
-		"projects-plus-plus.setGlobalRootPath",
-		() => projectsTreeProvider.setRootPath(true)
-	)
-	vscode.commands.registerCommand(
-		"projects-plus-plus.setWorkspaceRootPath",
-		() => projectsTreeProvider.setRootPath(false)
-	)
-	vscode.commands.registerCommand(
-		'projects-plus-plus.refreshProjects',
-		() => projectsTreeProvider.refresh()
-	)
-	vscode.commands.registerCommand(
-		'projects-plus-plus.openInWorkspace',
-		item => projectsTreeProvider.openInWorkspace(item)
-	)
-	vscode.commands.registerCommand(
-		'projects-plus-plus.removeFromWorkspace',
-		() => {
-			projectsTreeProvider.removeFromWorkspace()
-		}
-	)
-	vscode.commands.registerCommand(
-		'projects-plus-plus.create',
-		item => projectsTreeProvider.create(item)
-	)
-	vscode.commands.registerCommand(
-		'projects-plus-plus.delete',
-		item => projectsTreeProvider.delete(item)
-	)
-	vscode.commands.registerCommand(
-		'projects-plus-plus.markAsProject',
-		item => projectsTreeProvider.markAsProject(item)
-	)
-	vscode.commands.registerCommand(
-		'projects-plus-plus.markAsFolder',
-		item => projectsTreeProvider.markAsFolder(item)
-	)
+    commands.registerCommand(
+        "projects-plus-plus.setGlobalRootPath",
+        () => {
+            window.showOpenDialog({
+                canSelectFiles: false,
+                canSelectFolders: true,
+                canSelectMany: false,
+            }).then(uris => {
+                if (uris) {
+                    configuration.rootPath.set(uris[0].fsPath, true)
+                }
+            })
+        }
+    )
+    commands.registerCommand(
+        "projects-plus-plus.setWorkspaceRootPath",
+        () => {
+            window.showOpenDialog({
+                canSelectFiles: false,
+                canSelectFolders: true,
+                canSelectMany: false,
+            }).then(uris => {
+                if (uris) {
+                    configuration.rootPath.set(uris[0].fsPath, false)
+                }
+            })
+        }
+    )
+    commands.registerCommand(
+        'projects-plus-plus.refreshProjects',
+        () => projectsTreeProvider.refresh()
+    )
+    commands.registerCommand(
+        'projects-plus-plus.openInWorkspace',
+        item => projectsTreeProvider.openInWorkspace(item)
+    )
+    commands.registerCommand(
+        'projects-plus-plus.removeFromWorkspace',
+        () => projectsTreeProvider.removeFromWorkspace()
+    )
+    commands.registerCommand(
+        'projects-plus-plus.create',
+        item => projectsTreeProvider.create(item)
+    )
+    commands.registerCommand(
+        'projects-plus-plus.delete',
+        item => projectsTreeProvider.delete(item)
+    )
+    commands.registerCommand(
+        'projects-plus-plus.markAsProject',
+        item => projectsTreeProvider.markAsProject(item)
+    )
+    commands.registerCommand(
+        'projects-plus-plus.markAsFolder',
+        item => projectsTreeProvider.markAsFolder(item)
+    )
 }
 
 export function deactivate() { }
