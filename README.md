@@ -22,7 +22,8 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 * 将文件夹标记为项目根目录（Mark a folder as a project root）；
 * 一键将目录或项目添加到 VSCode 工作区（Add a directory or project to the VSCode workspace with one click）；
 * 从 VSCode 工作区移除目录（Remove a folder from the VSCode workspace）；
-* 新建和删除文件夹（Create and delete folders）。
+* 新建和删除文件夹（Create and delete folders）；
+* 从模板创建项目（Create projects from a template)。
 
 ## 命令 Commands
 
@@ -43,8 +44,7 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 
 - [X] 重构代码（Refactor the code）；
 - [X] 忽略 `Projects` 视图中以 `.` 开头的文件夹（Ignore folders beginning with `.` in the `Projects` tree view）；
-- [ ] 打开时 `Projects` 视图自动展开到已经在工作区打开的项目或文件夹（Expand the `Projects` tree view to the projects or folders already opened in the workspace when open VSCode）；
-- [ ] 使用模板创建项目（Create projects with templates）；
+- [X] 使用模板创建项目（Create projects with templates）；
 - [X] 自动识别 git 仓库（Automatically recognize git repositories）。
 
 ## 版本 Release Notes
