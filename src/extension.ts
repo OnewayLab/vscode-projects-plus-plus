@@ -34,8 +34,8 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	)
 	vscode.commands.registerCommand(
-		'projects-plus-plus.newFolder',
-		item => projectsTreeProvider.newFolder(item)
+		'projects-plus-plus.create',
+		item => projectsTreeProvider.create(item)
 	)
 	vscode.commands.registerCommand(
 		'projects-plus-plus.delete',

@@ -85,9 +85,9 @@
         "icon": "$(x)"
       },
       {
-        "command": "projects-plus-plus.newFolder",
-        "title": "New folder",
-        "icon": "$(new-folder)"
+        "command": "projects-plus-plus.create",
+        "title": "Create",
+        "icon": "$(plus)"
       },
       {
         "command": "projects-plus-plus.delete",
@@ -114,7 +114,7 @@
           "when": "false"
         },
         {
-          "command": "projects-plus-plus.newFolder",
+          "command": "projects-plus-plus.create",
           "when": "false"
         },
         {
@@ -149,7 +149,7 @@
           "group": "inline"
         },
         {
-          "command": "projects-plus-plus.newFolder",
+          "command": "projects-plus-plus.create",
           "when": "view == projects && viewItem == folder",
           "group": "inline"
         },
