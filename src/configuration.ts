@@ -29,6 +29,15 @@ export var rootPath = {
 }
 
 /**
+ * Template Folder.
+ */
+export var templateFolders = {
+    get(): string[] | undefined {
+        return workspace.getConfiguration("projects-plus-plus").get<string[]>("templateFolders")
+    }
+}
+
+/**
  * Project paths.
  */
 export var projects = {

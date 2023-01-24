@@ -4,8 +4,9 @@
  * @license MIT License. See LICENSE in the project root for license information.
  */
 
-import { Uri, workspace } from 'vscode'
+import { Uri, window, workspace } from 'vscode'
 import * as path from 'path'
+import * as configuration from './configuration'
 
 const DEFAULT_PATH = path.join(__dirname, "..", "templates")
 const DEFAULT_TEMPLATES = workspace.fs.readDirectory(Uri.file(DEFAULT_PATH))
@@ -18,7 +19,8 @@ var userTemplates: Thenable<[string, string][]>
  * @returns A promise of a list of templates, each of which is a pair of template name and folder.
  */
 export async function getTemplates(): Promise<[string, string][]> {
-    userPaths = workspace.getConfiguration("projects-plus-plus").get<string[]>("templatePaths")
+    userPaths = configuration.templateFolders.get()
+    window.showInformationMessage(userPaths ? userPaths[0] : 'undefined')
     let userTemplatesPromises = userPaths ?
         userPaths.flatMap(userPath =>
             workspace.fs.readDirectory(Uri.file(userPath))
@@ -28,8 +30,4 @@ export async function getTemplates(): Promise<[string, string][]> {
     userTemplates = Promise.all(userTemplatesPromises).then(entries => entries.flat(1))
     const templates = (await Promise.all([DEFAULT_TEMPLATES, userTemplates])).flat(1)
     return templates
-}
-
-export function createProject(templatePath: string, projectUri: Uri) {
-
 }

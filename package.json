@@ -51,7 +51,7 @@
       "properties": {
         "projects-plus-plus.rootPath": {
           "type": "string",
-          "description": "Root Path to Retrieve Projects"
+          "description": "Root Path to Retrieve Projects from"
         },
         "projects-plus-plus.projects": {
           "type": "array",
@@ -59,6 +59,14 @@
           "items": {
             "type": "string",
             "description": "Project Path"
+          }
+        },
+        "projects-plus-plus.templateFolders": {
+          "type": "array",
+          "description": "Folders that contain templates",
+          "items": {
+            "type": "string",
+            "description": "Template Folder Path"
           }
         }
       }
