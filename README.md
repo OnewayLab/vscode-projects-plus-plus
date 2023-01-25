@@ -4,16 +4,6 @@ Projects++ 是一个用于创建和管理项目的 VSCode 拓展。大多数此�
 
 Projects++ is a VSCode extension to create and manage your projects. Most of the extensions of this kind only support classifying projects by manually adding tags, while this extension can automatically retrieve and display all folders under the specified directory, so you can easily mark a folder as a project root, and add it to the VSCode workspace or remove it from the workspace.
 
-## 安装 Install
-
-您可以从 VSCode 拓展商店中搜索 Projects++ 并点击安装，也可以在本拓展 github 页面的 Release 中获取 vsce 包并使用如下命令安装到您的 VSCode：
-
-You can search for Projects++ in the VSCode extension marketplace and click install, or you can get the vsce package from the Release page of this extension on github and install it to your VSCode with the following command:
-
-```shell
-code --install-extension vscode-projects-plus-plus-<version-number>.vsix
-```
-
 ## 功能 Features
 
 ![Demo](assets/demo.gif)
@@ -51,6 +41,16 @@ See `README.md` in the template for more information.
 您也可以通过设置 `projects-plus-plus.templateFolders` 定义自己的模板搜索路径，如果您有好的项目模板想要集成到本插件，欢迎提交 PR。
 
 You can also define your own template search path through the setting `projects-plus-plus.templateFolders`. If you have a good project template that you want to integrate into this extension, please submit a PR.
+
+## 安装 Install
+
+您可以从 VSCode 拓展商店中搜索 Projects++ 并点击安装，也可以在本拓展 github 页面的 Release 中获取 vsce 包并使用如下命令安装到您的 VSCode：
+
+You can search for Projects++ in the VSCode extension marketplace and click install, or you can get the vsce package from the Release page of this extension on github and install it to your VSCode with the following command:
+
+```shell
+code --install-extension vscode-projects-plus-plus-<version-number>.vsix
+```
 
 ## 更新日志 Change Log
 
