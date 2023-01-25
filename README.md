@@ -1,22 +1,22 @@
 # Projects++
 
-Projects++ 是一个用于管理项目的 VSCode 拓展。大多数此类拓展仅支持通过手动添加标签的方式对项目进行分类管理，而本拓展可以自动检索并展示指定目录下的所有文件夹，您可以方便地将某个文件夹标记为一个项目根目录，并且将它添加到 VSCode 工作区或从工作区移除。
+Projects++ 是一个用于创建和管理项目的 VSCode 拓展。大多数此类拓展仅支持通过手动添加标签的方式对项目进行分类管理，而本拓展可以自动检索并展示指定目录下的所有文件夹，您可以方便地将某个文件夹标记为一个项目根目录，并且将它添加到 VSCode 工作区或从工作区移除。
 
-Projects++ is a VSCode extension to manage your projects. Most of the extensions of this kind only support classifying projects by manually adding tags, while this extension can automatically retrieve and display all folders under the specified directory, so you can easily mark a folder as a project root, and add it to the VSCode workspace or remove it from the workspace.
+Projects++ is a VSCode extension to create and manage your projects. Most of the extensions of this kind only support classifying projects by manually adding tags, while this extension can automatically retrieve and display all folders under the specified directory, so you can easily mark a folder as a project root, and add it to the VSCode workspace or remove it from the workspace.
 
 ## 安装 Install
 
-在完成 [开发计划](#开发计划-development-plan) 前本拓展将不会在 VSCode 拓展市场中发布，如果您想提前体验此拓展，可以在本拓展 github 页面的 Release 中获取 vsce 包并使用如下命令安装到您的 VSCode：
+您可以从 VSCode 拓展商店中搜索 Projects++ 并点击安装，也可以在本拓展 github 页面的 Release 中获取 vsce 包并使用如下命令安装到您的 VSCode：
 
-This extension will NOT be published to the VS Code Extension Marketplace until the [Development Plan](#开发计划-development-plan) is completed. If you want to try this extension in advance, you can get the vsce package in the Release of this extension's github page and install it with the following command:
+You can search for Projects++ in the VSCode extension marketplace and click install, or you can get the vsce package from the Release page of this extension on github and install it to your VSCode with the following command:
 
 ```shell
-code --install-extension vscode-projects-plus-plus-0.0.1.vsix
+code --install-extension vscode-projects-plus-plus-0.0.2.vsix
 ```
 
 ## 功能 Features
 
-![1668567265583](assets/1668567265583.gif)
+![Demo](assets/demo.gif)
 
 * 自动检索并展示指定目录下的文件夹（Retrieve and display all folders under the specified directory）；
 * 将文件夹标记为项目根目录（Mark a folder as a project root）；
@@ -34,23 +34,26 @@ code --install-extension vscode-projects-plus-plus-0.0.1.vsix
 ## 设置 Settings
 
 * `projects-plus-plus.rootPath`：开始检索项目的根路径（The root path to retrieve projects）；
+* `projects-plus-plus.templateFolders`：包含项目模板的文件夹列表（A list of folders containing project templates）；
 * `projects-plus-plus.projects`：项目路径的列表（A list of project paths）。
 
-## 已知问题 Known Issues
+## 项目模板 Project Templates
 
-* 添加第一个文件夹到工作区时会短暂出现欢迎页（The welcome view appear when add the first folder to the workspace）。
+本插件集成了来自 GitHub 的几个 star 数较高的项目模板（This extension integrates several project templates from Github with a high star count）：
 
-## 开发计划 Development Plan
+* `CppMakefile`：C++ 项目模板，使用 Makefile 进行构建（C++ project template using Makefile）；
+* `ModernCppStarter`：C++ 项目模板，使用 CMake 进行构建，包含测试套件、GitHub Actions、Clang 和 CMake 代码格式化等（C++ project template using CMake, including test suite, GitHub Actions, Clang and CMake code formatting, etc.）。
 
-- [X] 重构代码（Refactor the code）；
-- [X] 忽略 `Projects` 视图中以 `.` 开头的文件夹（Ignore folders beginning with `.` in the `Projects` tree view）；
-- [X] 使用模板创建项目（Create projects with templates）；
-- [X] 自动识别 git 仓库（Automatically recognize git repositories）。
+关于这些模板的详细信息和使用方式，请见模板中的 `README.md`。
 
-## 版本 Release Notes
+See `README.md` in the template for more information.
 
-### 0.0.1
+您也可以通过设置 `projects-plus-plus.templateFolders` 定义自己的模板搜索路径，如果您有好的项目模板想要集成到本插件，欢迎提交 PR。
 
-初始版本，实现了项目检索、添加和删除等基本功能。
+You can also define your own template search path through the setting `projects-plus-plus.templateFolders`. If you have a good project template that you want to integrate into this extension, please submit a PR.
 
-Initial version, implemented basic functions such as project retrieval, addition and deletion.
+## 更新日志 Change Log
+
+见 [CHANGELOG](./CHANGELOG.md)。
+
+See [CHANGELOG](./CHANGELOG.md).
