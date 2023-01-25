@@ -1,7 +1,7 @@
 {
   "name": "vscode-projects-plus-plus",
   "displayName": "Projects++",
-  "description": "",
+  "description": "Projects++ is a VSCode extension to create and manage your projects.",
   "version": "0.0.3",
   "publisher": "CanbinHuang",
   "license": "SEE LICENSE IN LICENSE",
