@@ -11,7 +11,7 @@ Projects++ is a VSCode extension to create and manage your projects. Most of the
 You can search for Projects++ in the VSCode extension marketplace and click install, or you can get the vsce package from the Release page of this extension on github and install it to your VSCode with the following command:
 
 ```shell
-code --install-extension vscode-projects-plus-plus-0.0.2.vsix
+code --install-extension vscode-projects-plus-plus-<version-number>.vsix
 ```
 
 ## 功能 Features
