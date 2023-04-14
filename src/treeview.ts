@@ -74,6 +74,13 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
     }
 
     /**
+     * Open the selected folder in a new window.
+     */
+    openInNewWindow(item: Item) {
+        commands.executeCommand("vscode.openFolder", item.uri, true)
+    }
+
+    /**
      * Remove the selected folder from the workspace.
      */
     async removeFromWorkspace() {

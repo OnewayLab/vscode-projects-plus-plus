@@ -49,6 +49,10 @@ export function activate(context: ExtensionContext) {
         item => projectsTreeProvider.openInWorkspace(item)
     )
     commands.registerCommand(
+        'projects-plus-plus.openInNewWindow',
+        item => projectsTreeProvider.openInNewWindow(item)
+    )
+    commands.registerCommand(
         'projects-plus-plus.removeFromWorkspace',
         () => projectsTreeProvider.removeFromWorkspace()
     )

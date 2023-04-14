@@ -4,6 +4,12 @@ All notable changes to the "vscode-projects-plus-plus" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.4] - 2023-04-14
+
+### Added
+
+* Open a folder or project in a new window
+
 ## [0.0.3] - 2023-01-25
 
 ### Fixed

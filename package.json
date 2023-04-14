@@ -2,7 +2,7 @@
   "name": "vscode-projects-plus-plus",
   "displayName": "Projects++",
   "description": "Projects++ is a VSCode extension to create and manage your projects.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "CanbinHuang",
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
@@ -88,7 +88,12 @@
       {
         "command": "projects-plus-plus.openInWorkspace",
         "title": "Open in workspace",
-        "icon": "$(link-external)"
+        "icon": "$(arrow-up)"
+      },
+      {
+        "command": "projects-plus-plus.openInNewWindow",
+        "title": "Open in new window",
+        "icon": "$(empty-window)"
       },
       {
         "command": "projects-plus-plus.removeFromWorkspace",
@@ -118,6 +123,10 @@
       "commandPalette": [
         {
           "command": "projects-plus-plus.openInWorkspace",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.openInNewWindow",
           "when": "false"
         },
         {
@@ -156,6 +165,11 @@
       "view/item/context": [
         {
           "command": "projects-plus-plus.openInWorkspace",
+          "when": "view == projects",
+          "group": "inline"
+        },
+        {
+          "command": "projects-plus-plus.openInNewWindow",
           "when": "view == projects",
           "group": "inline"
         },
