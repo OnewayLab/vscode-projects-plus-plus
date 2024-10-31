@@ -4,12 +4,13 @@
  * @license MIT License. See LICENSE in the project root for license information.
  */
 
-import { window, workspace, env, commands } from 'vscode';
-import { Uri, TreeDataProvider, TreeItem, TreeItemCollapsibleState, EventEmitter, FileType, ThemeIcon } from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
-import * as template from './template';
-import * as configuration from './configuration';
+import { window, workspace, env, commands, QuickPickItemKind } from "vscode";
+import { Uri, TreeDataProvider, TreeItem, TreeItemCollapsibleState, EventEmitter, FileType, ThemeIcon } from "vscode";
+import * as path from "path";
+import * as fs from "fs";
+import * as template from "./template";
+import * as configuration from "./configuration";
+import { exec } from "./utils";
 
 export class ProjectsTreeProvider implements TreeDataProvider<Item> {
     private rootPath?: string;
@@ -33,17 +34,22 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
     getChildren(element?: Item): Thenable<Item[]> {
         if (element) {
             return Promise.resolve(
-                workspace.fs.readDirectory(element.uri).then(entries =>
-                    entries.filter(entry =>
-                        entry[1] === FileType.Directory && !entry[0].startsWith(".")
-                    ).map(entry =>
-                        new Item(
-                            entry[0],
-                            this.projects.has(path.join(element.uri.fsPath, entry[0])) ? "project" : "folder",
-                            Uri.joinPath(element.uri, entry[0])
-                        )
+                workspace.fs
+                    .readDirectory(element.uri)
+                    .then((entries) =>
+                        entries
+                            .filter((entry) => entry[1] === FileType.Directory && !entry[0].startsWith("."))
+                            .map(
+                                (entry) =>
+                                    new Item(
+                                        entry[0],
+                                        this.projects.has(path.join(element.uri.fsPath, entry[0]))
+                                            ? "project"
+                                            : "folder",
+                                        Uri.joinPath(element.uri, entry[0])
+                                    )
+                            )
                     )
-                )
             );
         } else {
             if (this.rootPath) {
@@ -99,25 +105,45 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
      * Create a folder or project using a template.
      */
     async create(item: Item) {
+        const projectTemplates = await template.getTemplates();
         const selectedTemplate = await window.showQuickPick(
             [
-                { label: "folder", description: "Create a new folder" },
-                ...(await template.getTemplates()).map(t => ({
-                    label: t[0],
-                    description: t[1]
-                }))
+                { label: "Create a new folder", description: "" },
+                { label: "Create a git repository", description: "" },
+                { label: "Clone a git repository", description: "" },
+                { kind: QuickPickItemKind.Separator, label: "", description: "" },
+                ...projectTemplates.map((t) => ({ label: t[0], description: t[1] })),
             ],
-            { placeHolder: "Select a template" }
+            { placeHolder: "Select an operation or project template" }
         );
-        if (selectedTemplate) {
-            const type = selectedTemplate.label === "folder" ? "folder" : "project";
-            const name = await window.showInputBox({
-                prompt: "Enter the name of the new " + type,
-                placeHolder: "New " + type
-            });
-            if (name) {
-                const targetUri = Uri.joinPath(item.uri, name);
-                if (type === "project") {
+        if (!selectedTemplate) {
+            return;
+        }
+        if (selectedTemplate.label === "Clone a git repository") {
+            await commands.executeCommand("git.clone", null, item.uri.fsPath);
+        } else {
+            const type =
+                selectedTemplate.label === "Create a new folder"
+                    ? "new folder"
+                    : selectedTemplate.label === "Create a git repository"
+                    ? "new git repository"
+                    : "project";
+            let name = await window.showInputBox({ prompt: "Enter the name of the " + type, placeHolder: type });
+            name = name ? name.trim() : type;
+            const targetUri = Uri.joinPath(item.uri, name);
+            switch (type) {
+                case "new folder":
+                    workspace.fs.createDirectory(targetUri);
+                    break;
+                case "new git repository":
+                    await workspace.fs.createDirectory(targetUri);
+                    try {
+                        await exec("git init", { cwd: targetUri.fsPath });
+                    } catch (e) {
+                        window.showErrorMessage(`Failed to initialize git repository: ${e}`);
+                    }
+                    break;
+                case "project":
                     const sourceUri = Uri.file(path.join(selectedTemplate.description, selectedTemplate.label));
                     workspace.fs.copy(sourceUri, targetUri).then(() => {
                         workspace.fs.delete(Uri.joinPath(targetUri, ".git"), { recursive: true });
@@ -125,12 +151,11 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
                     this.projects.add(targetUri.fsPath);
                     await configuration.projects.set(Array.from(this.projects));
                     configuration.workspaceFolders.add(targetUri);
-                } else {
-                    workspace.fs.createDirectory(targetUri);
-                    this.refresh();
-                }
+                default:
+                    break;
             }
         }
+        this.refresh();
     }
 
     delete(item: Item) {
@@ -153,17 +178,14 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
 class Item extends TreeItem {
     iconPath?: Uri | ThemeIcon;
 
-    constructor(
-        name: string,
-        public readonly type: "project" | "folder",
-        public readonly uri: Uri,
-        expanded = false
-    ) {
+    constructor(name: string, public readonly type: "project" | "folder", public readonly uri: Uri, expanded = false) {
         super(
             name,
-            type === "project" ? TreeItemCollapsibleState.None :
-                expanded ? TreeItemCollapsibleState.Expanded :
-                    TreeItemCollapsibleState.Collapsed,
+            type === "project"
+                ? TreeItemCollapsibleState.None
+                : expanded
+                ? TreeItemCollapsibleState.Expanded
+                : TreeItemCollapsibleState.Collapsed
         );
         this.contextValue = type;
         this.iconPath = new ThemeIcon(fs.existsSync(path.join(uri.fsPath, ".git")) ? "git-branch" : type);
