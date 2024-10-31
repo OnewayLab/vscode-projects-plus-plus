@@ -45,6 +45,15 @@ export function activate(context: ExtensionContext) {
     commands.registerCommand("projects-plus-plus.openInNewWindow", (item) =>
         projectsTreeProvider.openInNewWindow(item)
     );
+    commands.registerCommand("projects-plus-plus.openInTerminal", (item) => {
+        projectsTreeProvider.openInTerminal(item);
+    });
+    commands.registerCommand("projects-plus-plus.openInNewTerminal", (item) =>
+        projectsTreeProvider.openInNewTerminal(item)
+    );
+    commands.registerCommand("projects-plus-plus.openInCurrentTerminal", (item) =>
+        projectsTreeProvider.openInCurrentTerminal(item)
+    );
     commands.registerCommand("projects-plus-plus.removeFromWorkspace", () =>
         projectsTreeProvider.removeFromWorkspace()
     );

@@ -68,6 +68,17 @@
             "type": "string",
             "description": "Template Folder Path"
           }
+        },
+        "projects-plus-plus.whichTerminal": {
+          "type": "string",
+          "enum": ["always ask", "always new", "always current"],
+          "enumDescriptions": [
+            "Always ask me",
+            "Always open the folder in a new terminal",
+            "Always open the folder in the current terminal"
+          ],
+          "default": "always ask",
+          "description": "Which terminal to open the folder in"
         }
       }
     },
@@ -94,6 +105,21 @@
         "command": "projects-plus-plus.openInNewWindow",
         "title": "Open in new window",
         "icon": "$(empty-window)"
+      },
+      {
+        "command": "projects-plus-plus.openInTerminal",
+        "title": "Open in terminal",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "projects-plus-plus.openInNewTerminal",
+        "title": "Open in new terminal",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "projects-plus-plus.openInCurrentTerminal",
+        "title": "Open in current terminal",
+        "icon": "$(terminal)"
       },
       {
         "command": "projects-plus-plus.removeFromWorkspace",
@@ -127,6 +153,18 @@
         },
         {
           "command": "projects-plus-plus.openInNewWindow",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.openInTerminal",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.openInNewTerminal",
+          "when": "false"
+        },
+        {
+          "command": "projects-plus-plus.openInCurrentTerminal",
           "when": "false"
         },
         {
@@ -166,22 +204,35 @@
         {
           "command": "projects-plus-plus.openInWorkspace",
           "when": "view == projects",
-          "group": "inline"
+          "group": "inline@5"
         },
         {
           "command": "projects-plus-plus.openInNewWindow",
           "when": "view == projects",
-          "group": "inline"
+          "group": "inline@4"
         },
         {
           "command": "projects-plus-plus.create",
           "when": "view == projects && viewItem == folder",
-          "group": "inline"
+          "group": "inline@1"
         },
         {
           "command": "projects-plus-plus.markAsProject",
           "when": "view == projects && viewItem == folder",
-          "group": "inline"
+          "group": "inline@2"
+        },
+        {
+          "command": "projects-plus-plus.openInTerminal",
+          "when": "view == projects",
+          "group": "inline@3"
+        },
+        {
+          "command": "projects-plus-plus.openInNewTerminal",
+          "when": "view == projects"
+        },
+        {
+          "command": "projects-plus-plus.openInCurrentTerminal",
+          "when": "view == projects"
         },
         {
           "command": "projects-plus-plus.delete",

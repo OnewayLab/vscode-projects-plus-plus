@@ -50,6 +50,19 @@ export var projects = {
 };
 
 /**
+ * Which terminal to open the folder in.
+ */
+type TerminalOption = "always ask" | "always new" | "always current";
+export var whichTerminal = {
+    get(): TerminalOption {
+        return workspace.getConfiguration("projects-plus-plus").get<TerminalOption>("whichTerminal") || "always ask";
+    },
+    set(option: TerminalOption) {
+        return workspace.getConfiguration("projects-plus-plus").update("whichTerminal", option, false);
+    },
+};
+
+/**
  * Folders opened in the current workspace.
  */
 export var workspaceFolders = {

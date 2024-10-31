@@ -87,6 +87,63 @@ export class ProjectsTreeProvider implements TreeDataProvider<Item> {
     }
 
     /**
+     * Open the selected folder in a new terminal.
+     */
+    openInNewTerminal(item: Item) {
+        window.createTerminal({ cwd: item.uri }).show();
+    }
+
+    /**
+     * Open the selected folder in the current terminal.
+     */
+    openInCurrentTerminal(item: Item) {
+        const terminal = window.activeTerminal;
+        if (terminal) {
+            terminal.sendText(`cd "${item.uri.fsPath}"`);
+            terminal.show();
+        } else {
+            this.openInNewTerminal(item);
+        }
+    }
+
+    /**
+     * Open the selected folder in terminal.
+     */
+    async openInTerminal(item: Item) {
+        switch (configuration.whichTerminal.get()) {
+            case "always ask":
+                const option = await window.showQuickPick(
+                    ["New terminal", "Current terminal", "Always new terminal", "Always current terminal"],
+                    { placeHolder: "Which terminal to open the folder in?" }
+                );
+                console.log(option);
+                switch (option) {
+                    case "Always new terminal":
+                        configuration.whichTerminal.set("always new");
+                    case "New terminal":
+                        this.openInNewTerminal(item);
+                        break;
+                    case "Always current terminal":
+                        configuration.whichTerminal.set("always current");
+                    case "Current terminal":
+                        this.openInCurrentTerminal(item);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "always new":
+                this.openInNewTerminal(item);
+                break;
+            case "always current":
+                this.openInCurrentTerminal(item);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * Remove the selected folder from the workspace.
      */
     async removeFromWorkspace() {
