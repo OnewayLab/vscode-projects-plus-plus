@@ -4,7 +4,7 @@
  * @license MIT License. See LICENSE in the project root for license information.
  */
 
-import { Uri, workspace } from 'vscode';
+import { Uri, workspace } from "vscode";
 
 /**
  * Root path to retrieve projects from.
@@ -25,7 +25,7 @@ export var rootPath = {
      */
     set(path: string, global = false): Thenable<void> {
         return workspace.getConfiguration("projects-plus-plus").update("rootPath", path, global);
-    }
+    },
 };
 
 /**
@@ -34,7 +34,7 @@ export var rootPath = {
 export var templateFolders = {
     get(): string[] | undefined {
         return workspace.getConfiguration("projects-plus-plus").get<string[]>("templateFolders");
-    }
+    },
 };
 
 /**
@@ -46,7 +46,7 @@ export var projects = {
     },
     set(projects: string[]): Thenable<void> {
         return workspace.getConfiguration("projects-plus-plus").update("projects", projects, false);
-    }
+    },
 };
 
 /**
@@ -54,14 +54,12 @@ export var projects = {
  */
 export var workspaceFolders = {
     get(): string[] {
-        return workspace.workspaceFolders?.map(folder => folder.uri.fsPath) || [];
+        return workspace.workspaceFolders?.map((folder) => folder.uri.fsPath) || [];
     },
     add(folderUri: Uri) {
-        workspace.updateWorkspaceFolders(
-            workspace.workspaceFolders ? workspace.workspaceFolders.length : 0,
-            null,
-            { uri: folderUri }
-        );
+        workspace.updateWorkspaceFolders(workspace.workspaceFolders ? workspace.workspaceFolders.length : 0, null, {
+            uri: folderUri,
+        });
     },
     remove(folderUri: Uri) {
         const workspaceFolder = workspace.getWorkspaceFolder(folderUri);
@@ -71,14 +69,14 @@ export var workspaceFolders = {
                 1
             );
         }
-    }
+    },
 };
 
 /**
  * Register callbacks for configuration changes.
  */
 export function registerConfigurationChangeCallback(callback: () => void) {
-    workspace.onDidChangeConfiguration(event => {
+    workspace.onDidChangeConfiguration((event) => {
         if (event.affectsConfiguration("projects-plus-plus")) {
             callback();
         }
