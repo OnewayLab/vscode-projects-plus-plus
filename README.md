@@ -13,7 +13,9 @@ Projects++ is a VSCode extension to create and manage your projects. Most of the
 * 一键将目录或项目添加到 VSCode 工作区（Add a directory or project to the VSCode workspace with one click）；
 * 从 VSCode 工作区移除目录（Remove a folder from the VSCode workspace）；
 * 新建和删除文件夹（Create and delete folders）；
-* 从模板创建项目（Create projects from a template)。
+* 新建或克隆 Git 仓库（Create or clone Git repository）；
+* 从模板创建项目（Create projects from a template)；
+* 在终端打开文件夹（Open a folder in the terminal）。
 
 ## 命令 Commands
 
